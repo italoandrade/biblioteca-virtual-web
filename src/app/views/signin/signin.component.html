@@ -1,0 +1,85 @@
+<div class="background ui-nav-drawer-persistent" [class.loading]="submitting">
+    <div class="ui-toolbar-space"></div>
+    <ui-card>
+        <div class="ui-progress primary">
+            <div class="indeterminate"></div>
+        </div>
+        <ui-card-title>
+            <img class="logo" src="/assets/icons/android-chrome-192x192.png"/>
+            Inicie a sessão
+        </ui-card-title>
+        <ui-card-subtitle>com seu e-mail e senha</ui-card-subtitle>
+        <ui-card-content>
+            <form #formSignIn="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit(formSignIn)">
+                <ui-input-container>
+                    <input id="email" type="email" [(ngModel)]="info.email" name="email" uiInput required
+                           #fieldEmail="ngModel"
+                           uiMaxlength="255" pattern="[a-zA-Z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
+                           autofocus>
+                    <label for="email">E-mail</label>
+                    <div class="ui-messages">
+                        <div *ngIf="fieldEmail.errors && fieldEmail.dirty">
+                            <div class="ui-message error"
+                                 [hidden]="!fieldEmail.pristine && !fieldEmail.errors.required">E-mail é
+                                obrigatório
+                            </div>
+                            <div class="ui-message error"
+                                 [hidden]="!fieldEmail.errors.pattern">E-mail
+                                está inválido
+                            </div>
+                            <div class="ui-message counter error" [hidden]="!fieldEmail.errors.uiMaxlength">
+                                {{info.email ? info.email.length : 0}}/255
+                            </div>
+                            <div class="ui-message error"
+                                 [hidden]="!fieldEmail.hasError(['notFound'])">
+                                E-mail não encontrado
+                            </div>
+                        </div>
+                    </div>
+                </ui-input-container>
+                <ui-input-container>
+                    <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="info.senha" name="senha"
+                           uiInput
+                           required #fieldSenha="ngModel" uiMaxlength="40">
+                    <label>Senha</label>
+                    <div class="suffix ui-button flat icon" (click)="showPassword = !showPassword" uiRipple>
+                        <i class="material-icons">{{showPassword ? 'visibility_off' : 'visibility'}}</i>
+                    </div>
+                    <div class="ui-messages">
+                        <div *ngIf="fieldSenha.errors && fieldSenha.dirty">
+                            <div class="ui-message error"
+                                 [hidden]="!fieldSenha.pristine && !fieldSenha.errors.required">
+                                Senha
+                                é obrigatória
+                            </div>
+                            <div class="ui-message counter error"
+                                 [hidden]="!fieldSenha.errors.uiMaxlength">
+                                {{info.password ? info.password.length : 0}}/40
+                            </div>
+                            <div class="ui-message error"
+                                 [hidden]="!fieldSenha.hasError(['wrongPassword'])">
+                                Senha incorreta
+                            </div>
+                        </div>
+                    </div>
+                </ui-input-container>
+                <div class="ui-button-container align-right">
+                    <div class="forgot-password">
+                        <a href="/recover" (click)="goToRecover($event)">
+                            Esqueceu a senha?
+                        </a>
+                    </div>
+                    <button class="ui-button primary" uiRipple
+                            [disabled]="!formSignIn.valid && formSignIn.dirty">
+                        Entrar
+                    </button>
+                </div>
+            </form>
+        </ui-card-content>
+    </ui-card>
+    <div class="ui-button-container cover">
+        <a class="ui-button primary raised" uiRipple href="/signup" (click)="goToSignUp($event)">
+            Criar nova conta
+        </a>
+    </div>
+</div>

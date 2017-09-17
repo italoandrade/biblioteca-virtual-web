@@ -1,0 +1,84 @@
+<ui-toolbar class="fixed flat elevate-on-scroll accent" id="app-header">
+    <button (click)="menuOpen = true" class="ui-button flat icon" uiRipple>
+        <i class="material-icons">menu</i>
+    </button>
+    <a class="logo" routerLink="/">
+        <img src="/assets/icons/biblioteca-virtual.png"
+             alt="">
+    </a>
+    <div class="title">{{title}}</div>
+    <div class="align-right">
+        <div *ngIf="usuario">
+            <button class="ui-button icon user" uiRipple
+                    [style.background-color]="usuario.cor"
+                    [class.is-bright]="isBright(usuario.cor)"
+                    [uiMenuTrigger]="menuUser"
+                    align="right">
+                {{usuario.letra}}
+            </button>
+        </div>
+        <div *ngIf="!usuario">
+            <a class="ui-button flat icon" uiRipple routerLink="/signin">
+                <i class="material-icons">person</i>
+            </a>
+        </div>
+    </div>
+</ui-toolbar>
+
+<ui-nav-drawer class="persistent" [(open)]="menuOpen">
+    <ui-toolbar class="flat">
+        <button (click)="menuOpen = false" class="ui-button flat icon" uiRipple>
+            <i class="material-icons">menu</i>
+        </button>
+        <a class="logo" routerLink="/">
+            <img src="/assets/icons/biblioteca-virtual.png"
+                 alt="">
+        </a>
+        <span class="title">{{title}}</span>
+    </ui-toolbar>
+    <div class="ui-nav-drawer-overflow">
+        <div class="ui-list">
+            <div *ngIf="usuario">
+                <a class="ui-list-item" uiRipple routerLink="/" [routerLinkActive]="['active']"
+                   [routerLinkActiveOptions]="{ exact: true }">
+                    <span class="icon">
+                        <i class="material-icons">home</i>
+                    </span>
+                    Início
+                </a>
+                <a class="ui-list-item" uiRipple routerLink="/client" [routerLinkActive]="['active']">
+                    <span class="icon">
+                        <i class="material-icons">group</i>
+                    </span>
+                    Clientes
+                </a>
+            </div>
+            <div *ngIf="!usuario">
+
+                <a class="ui-list-item" uiRipple routerLink="/signin">
+                    <span class="icon">
+                        <i class="material-icons">person</i>
+                    </span>
+                    Iniciar sessão
+                </a>
+            </div>
+        </div>
+    </div>
+</ui-nav-drawer>
+
+<router-outlet></router-outlet>
+
+<ui-snackbar-container></ui-snackbar-container>
+<tfy-notification-pop-container *ngIf="usuario"></tfy-notification-pop-container>
+
+<ui-menu #menuUser>
+    <div class="ui-menu-content size-2x" *ngIf="usuario">
+        <div class="ui-menu-item">
+            <b>{{usuario.nome}}</b>
+        </div>
+        <div class="ui-divider"></div>
+        <div class="ui-menu-item" uiRipple (click)="signOut()">
+            Sair
+        </div>
+    </div>
+</ui-menu>
