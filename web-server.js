@@ -4,7 +4,7 @@ const fs = require('fs');
 const compression = require('compression');
 const os = require("os");
 
-const port = 8081;
+const port = 6970;
 
 function loadServer() {
     const app = express();
