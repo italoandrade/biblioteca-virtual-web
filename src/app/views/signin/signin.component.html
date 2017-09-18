@@ -20,12 +20,11 @@
                     <div class="ui-messages">
                         <div *ngIf="fieldEmail.errors && fieldEmail.dirty">
                             <div class="ui-message error"
-                                 [hidden]="!fieldEmail.pristine && !fieldEmail.errors.required">E-mail é
-                                obrigatório
+                                 [hidden]="!fieldEmail.pristine && !fieldEmail.errors.required">
+                                E-mail é obrigatório
                             </div>
-                            <div class="ui-message error"
-                                 [hidden]="!fieldEmail.errors.pattern">E-mail
-                                está inválido
+                            <div class="ui-message error" [hidden]="!fieldEmail.errors.pattern">
+                                E-mail está inválido
                             </div>
                             <div class="ui-message counter error" [hidden]="!fieldEmail.errors.uiMaxlength">
                                 {{info.email ? info.email.length : 0}}/255
@@ -64,11 +63,11 @@
                     </div>
                 </ui-input-container>
                 <div class="ui-button-container align-right">
-                    <div class="forgot-password">
+                    <!--<div class="forgot-password">
                         <a href="/recover" (click)="goToRecover($event)">
                             Esqueceu a senha?
                         </a>
-                    </div>
+                    </div>-->
                     <button class="ui-button primary" uiRipple
                             [disabled]="!formSignIn.valid && formSignIn.dirty">
                         Entrar

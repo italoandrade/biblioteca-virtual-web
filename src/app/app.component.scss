@@ -1,32 +1,13 @@
 @import "~ng-smn-ui/core/core";
 @import "~ng-smn-ui/core/variables";
 @import "./app.theme";
-@import "./core/components/notifications/pop/notification-pop.theme";
 
 @include ui-core();
 
-@include ui-build-theme($theme-dark);
+@include ui-build-theme($theme);
 
 html {
     background-color: transparent;
-}
-
-.dark {
-    @at-root body#{&} {
-        background-color: #303030;
-        color: map_get($theme-dark, primary-text-color);
-    }
-
-    @include ui-build-theme($theme-dark);
-}
-
-.light {
-    @at-root body#{&} {
-        background-color: #FAFAFA;
-        color: map_get($theme-dark, primary-text);
-    }
-
-    @include ui-build-theme($theme);
 }
 
 a {
@@ -60,6 +41,3 @@ ui-toolbar.fixed header .user {
         }
     }
 }
-
-@include tfy-notification-pop($theme);
-/**/

@@ -29,6 +29,9 @@ export class ApiService {
         let body: any;
         if (error instanceof Response) {
             body = error.json() || '';
+            if (body) {
+                body.status = error.status
+            }
 
             switch (error.status) {
                 case 0:
@@ -43,6 +46,14 @@ export class ApiService {
                 case 400:
                     UiSnackbar.show({
                         text: 'Requisição inválida. Verifique as informações fornecidas.',
+                        actionText: 'OK',
+                        duration: Infinity,
+                        action: close => close()
+                    });
+                    break;
+                case 401:
+                    UiSnackbar.show({
+                        text: 'Você não tem permissão para acessar esta funcionalidade',
                         actionText: 'OK',
                         duration: Infinity,
                         action: close => close()

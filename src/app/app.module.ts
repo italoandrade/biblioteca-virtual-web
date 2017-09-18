@@ -12,7 +12,8 @@ import {UsuarioService} from './core/services/usuario.service';
 import {SignInModule} from './views/signin/signin.module';
 import {NotFoundModule} from './views/not-found/not-found.module';
 import {HomeModule} from './views/home/home.module';
-import {ClientModule} from './views/client/client.module';
+import {ClienteModule} from './views/cliente/cliente.module';
+import {EditoraModule} from './views/editora/editora.module';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import {ClientModule} from './views/client/client.module';
         SignInModule,
         HomeModule,
         NotFoundModule,
-        ClientModule,
+        ClienteModule,
+        EditoraModule,
 
         AppRoutingModule
     ],

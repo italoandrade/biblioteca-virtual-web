@@ -71,7 +71,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
             this.submitting = true;
 
             this.api
-                .prep('usuario', 'signup')
+                .prep('usuario', 'cadastrar')
                 .call(this.info)
                 .subscribe(
                     (data) => {

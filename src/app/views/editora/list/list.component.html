@@ -1,0 +1,78 @@
+<div class="ui-s480">
+    <ui-card class="elevate-on-toolbar">
+        <div class="ui-progress" [class.hide]="!(loading && !searching)">
+            <div class="indeterminate"></div>
+        </div>
+        <ui-toolbar class="flat">
+            <span class="title" [ngClass]="{'hide': searchOpen}">Lista de editoras</span>
+            <div class="align-right">
+                <form #searchForm="ngForm" name="searchForm" class="ui-validate on-dirty"
+                      [ngClass]="{'open': searchOpen}">
+                    <ui-input-container>
+                        <input #searchFormText="ngModel" type="text" name="searchText" [(ngModel)]="searchText"
+                               uiMaxlength="200" uiInput [persistPlaceholder]="true" placeholder="Pesquisa"
+                               (keyup)="search(searchFormText.value)">
+                        <div class="ui-messages">
+                            <div *ngIf="searchFormText.errors && searchFormText.dirty">
+                                <div class="ui-message counter error">
+                                    {{searchText ? searchText.length : 0}}/200
+                                </div>
+                            </div>
+                        </div>
+                    </ui-input-container>
+                </form>
+                <button class="ui-button flat icon search" uiRipple (click)="toggleSearch()">
+                    <ui-progress-radial class="indeterminate" *ngIf="searching"></ui-progress-radial>
+                    <i class="material-icons" [ngClass]="{'show': !searchOpen}">search</i>
+                    <i class="material-icons" [ngClass]="{'show': searchOpen}">close</i>
+                </button>
+            </div>
+        </ui-toolbar>
+        <ui-data-table>
+            <tbody>
+            <tr>
+                <th uiDataTableOrderBy (click)="toggleOrderBy('nome')">
+                    Nome
+                </th>
+            </tr>
+            <tr *ngFor="let editora of editoras" [routerLink]="['/editora', editora.id]">
+                <td>
+                    <span class="ellipsis">
+                    {{editora.nome}}
+                    </span>
+                </td>
+            </tr>
+            <tr class="empty" *ngIf="!editoras || !editoras.length">
+                <td colspan="4">{{loading ? 'Carregando...' : 'Nenhuma editora encontrada'}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="align-right">
+                    <div class="ui-button-container align-right">
+                        <span class="pagination" *ngIf="lineCount">
+                            {{((page - 1) * 10) + 1}}-{{page * 10 < lineCount ? page * 10 :
+                            lineCount}} de {{lineCount}}
+                        </span>
+                        <button class="ui-button flat icon" uiRipple [disabled]="page < 2"
+                                (click)="page = page - 1; getEditoras();">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </button>
+                        <button class="ui-button flat icon" uiRipple [disabled]="lineCount < this.page * 10"
+                                (click)="page = page + 1; getEditoras();">
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </ui-data-table>
+    </ui-card>
+    <div class="ui-fab-container">
+        <a class="ui-button primary fab" uiRipple href="/editora/nova" (click)="goInfo($event)">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+</div>
+
+<div style="height: 80px"></div>

@@ -11,63 +11,53 @@ export const APIS = {
             method: 'get',
             url: `${environment.host}usuario/relogin`
         },
-        signup: {
+        cadastrar: {
             method: 'post',
-            url: `${environment.host}usuario/signup`,
-            isPublic: true
-        },
-        recover: {
-            method: 'post',
-            url: `${environment.host}usuario/recover`,
-            isPublic: true
-        },
-        recoverConfirm: {
-            method: 'post',
-            url: `${environment.host}usuario/recover/confirm`,
+            url: `${environment.host}usuario/cadastrar`,
             isPublic: true
         }
     },
-    // client: {
-    //     select: {
-    //         method: 'get',
-    //         url: `${environment.host}client`
-    //     },
-    //     selectById: {
-    //         method: 'get',
-    //         url: `${environment.host}client/:id`
-    //     },
-    //     insert: {
-    //         method: 'post',
-    //         url: `${environment.host}client`
-    //     },
-    //     update: {
-    //         method: 'put',
-    //         url: `${environment.host}client/:id`
-    //     },
-    //     delete: {
-    //         method: 'delete',
-    //         url: `${environment.host}client/:id`
-    //     }
-    // },
-    // typeClient: {
-    //     select: {
-    //         method: 'get',
-    //         url: `${environment.host}type-client`,
-    //         isPublic: true
-    //     }
-    // },
-    // typeRecurring: {
-    //     select: {
-    //         method: 'get',
-    //         url: `${environment.host}type-recurring`,
-    //         isPublic: true
-    //     }
-    // },
-    // regions: {
-    //     select: {
-    //         method: 'get',
-    //         url: `${environment.host}region`,
-    //         isPublic: true
-    //     }
-    // }
+    cliente: {
+        selecionar: {
+            method: 'get',
+            url: `${environment.host}cliente`
+        },
+        selecionarPorId: {
+            method: 'get',
+            url: `${environment.host}cliente/:id`
+        },
+        atualizar: {
+            method: 'put',
+            url: `${environment.host}cliente/:id`
+        }
+    },
+    cep: {
+        selecionar: {
+            method: 'get',
+            url: 'https://viacep.com.br/ws/:cep/json/',
+            isPublic: true
+        }
+    },
+    editora: {
+        selecionar: {
+            method: 'get',
+            url: `${environment.host}editora`
+        },
+        selecionarPorId: {
+            method: 'get',
+            url: `${environment.host}editora/:id`
+        },
+        inserir: {
+            method: 'post',
+            url: `${environment.host}editora`
+        },
+        atualizar: {
+            method: 'put',
+            url: `${environment.host}editora/:id`
+        },
+        remover: {
+            method: 'delete',
+            url: `${environment.host}editora/:id`
+        }
+    },
 };

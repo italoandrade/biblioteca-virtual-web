@@ -46,12 +46,22 @@
                     </span>
                     Início
                 </a>
-                <!--<a class="ui-list-item" uiRipple routerLink="/client" [routerLinkActive]="['active']">
-                    <span class="icon">
-                        <i class="material-icons">group</i>
-                    </span>
-                    Clientes
-                </a>-->
+                <div *ngIf="usuario.idTipoUsuario === 1">
+                    <div class="ui-divider"></div>
+                    <div class="ui-list-item subheader">Administrativo</div>
+                    <a class="ui-list-item" uiRipple routerLink="/cliente" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">group</i>
+                        </span>
+                        Clientes
+                    </a>
+                    <a class="ui-list-item" uiRipple routerLink="/editora" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">library_books</i>
+                        </span>
+                        Editoras
+                    </a>
+                </div>
             </div>
             <div *ngIf="!usuario">
 

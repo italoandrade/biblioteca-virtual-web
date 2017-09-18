@@ -4,4 +4,3 @@ $primary: (color: 'red', hue: '400');
 $accent: (color: 'red', hue: '100');
 
 $theme: ui-theme($primary, $accent);
-$theme-dark: ui-theme($primary, $accent, true);

@@ -31,9 +31,10 @@ export class UsuarioService {
                         this.set(data);
                     }, (error) => {
                         console.error(error);
-                        UiCookie.delete('BIVI');
                         switch (error.executionCode) {
                             case 1:
+                            case 2:
+                                UiCookie.delete('BIVI');
                                 UiSnackbar.show({
                                     text: 'Sua sessão expirou',
                                     actionText: 'OK',
@@ -49,4 +50,3 @@ export class UsuarioService {
         }
     }
 }
-/**/

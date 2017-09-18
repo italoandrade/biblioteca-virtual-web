@@ -5,8 +5,6 @@ import {SigninRoutingModule} from './signin-routing.module';
 
 import {SignInComponent} from './signin.component';
 import {SignUpComponent} from './signup/signup.component';
-import {RecoverComponent} from './recover/recover.component';
-import {RecoverConfirmComponent} from './recover/confirm/confirm.component';
 
 @NgModule({
     imports: [
@@ -15,9 +13,7 @@ import {RecoverConfirmComponent} from './recover/confirm/confirm.component';
     ],
     declarations: [
         SignInComponent,
-        SignUpComponent,
-        RecoverComponent,
-        RecoverConfirmComponent,
+        SignUpComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
