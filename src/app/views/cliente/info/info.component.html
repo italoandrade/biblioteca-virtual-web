@@ -5,11 +5,11 @@
                 <div class="indeterminate"></div>
             </div>
             <ui-toolbar class="flat transparent">
-                <button class="ui-button flat icon" type="button" uiRipple (click)="goBack()">
+                <button class="ui-button flat icon" type="button" uiRipple (click)="_location.back()">
                     <i class="material-icons">arrow_back</i>
                 </button>
                 <span class="title">
-                    {{loading ? 'Carregando' : 'Alterando ' + (info.nome || '')}}</span>
+                    {{loading ? 'Carregando' : 'Alterando ' + (info.nome || 'cliente')}}</span>
             </ui-toolbar>
             <fieldset [disabled]="saving || loading">
                 <ui-card-content>

@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit, ElementRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, ElementRef, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {UiToolbarService, UiSnackbar} from 'ng-smn-ui';
+import {UiToolbarService, UiSnackbar, UiElement} from 'ng-smn-ui';
 
 import {ApiService} from '../../../core/api/api.service';
 
@@ -12,7 +12,7 @@ import {ApiService} from '../../../core/api/api.service';
     styleUrls: ['./info.component.scss']
 })
 
-export class ClienteInfoComponent implements OnDestroy, OnInit {
+export class ClienteInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     info;
     saving: boolean;
     loading = true;
@@ -21,7 +21,7 @@ export class ClienteInfoComponent implements OnDestroy, OnInit {
 
     constructor(private toolbarService: UiToolbarService,
                 private api: ApiService,
-                private _location: Location,
+                public _location: Location,
                 private router: Router,
                 private route: ActivatedRoute,
                 private element: ElementRef) {
@@ -30,11 +30,18 @@ export class ClienteInfoComponent implements OnDestroy, OnInit {
     }
 
     ngOnInit() {
+        this.getEstados();
+    }
+
+    ngAfterViewInit() {
         this.toolbarService.set('Cliente');
         this.toolbarService.activateExtendedToolbar(960);
 
         this.getInfo();
-        this.getEstados();
+    }
+
+    ngOnDestroy() {
+        this.toolbarService.deactivateExtendedToolbar();
     }
 
     getInfo() {
@@ -46,17 +53,11 @@ export class ClienteInfoComponent implements OnDestroy, OnInit {
             .subscribe(data => {
                 Object.assign(this.info, data);
             }, error => {
-                if (error.status === 401) {
-                    return this.router.navigate(['']);
-                }
-
-                switch (error.executionCode) {
-                    case 1:
-                        UiSnackbar.show({
-                            text: error.message
-                        });
-                        this.goBack();
-                        break;
+                if (error.executionCode === 1) {
+                    this.router.navigate(['/cliente'], {replaceUrl: true});
+                    UiSnackbar.show({
+                        text: error.message
+                    });
                 }
             }, () => {
                 this.loading = false;
@@ -115,20 +116,10 @@ export class ClienteInfoComponent implements OnDestroy, OnInit {
         }
     }
 
-    ngOnDestroy() {
-        this.toolbarService.deactivateExtendedToolbar();
-    }
-
-    goBack() {
-        if (sessionStorage.getItem('goBack')) {
-            this._location.back();
-        } else {
-            this.router.navigate(['/cliente']);
-        }
-    }
-
     onSubmit(form) {
         if (!this.saving) {
+            this.saving = true;
+
             for (const control in form.controls) {
                 if (form.controls.hasOwnProperty(control)) {
                     form.controls[control].markAsTouched();
@@ -137,11 +128,10 @@ export class ClienteInfoComponent implements OnDestroy, OnInit {
             }
 
             if (!form.valid) {
-                this.element.nativeElement.querySelectorAll('form .ng-invalid')[0].focus();
+                UiElement.focus(this.element.nativeElement.querySelector('form .ng-invalid'));
+                this.saving = false;
                 return false;
             }
-
-            this.saving = true;
 
             this.api
                 .prep('cliente', 'atualizar')
@@ -151,29 +141,15 @@ export class ClienteInfoComponent implements OnDestroy, OnInit {
                     UiSnackbar.show({
                         text: 'Cliente alterado com sucesso'
                     });
-                }, (error) => {
+                }, error => {
                     this.saving = false;
                     switch (error.executionCode) {
-                        case 2:
-                            this.element.nativeElement.querySelectorAll('input[name="logon"]')[0].focus();
-                            form.controls['logon'].setErrors({existingLogon: true});
-                            break;
-                        case 3:
-                            this.element.nativeElement.querySelectorAll('input[name="idSuperior"]')[0].focus();
-                            form.controls['idSuperior'].setErrors({notFound: true});
-                            UiSnackbar.show({
-                                text: 'Usuário superior não encontrado. Verifique se ele não foi excluído.'
-                            });
-                            break;
-                        case 4:
-                            this.element.nativeElement.querySelectorAll('input[name="idGrupo"]')[0].focus();
-                            form.controls['idGrupo'].setErrors({notFound: true});
-                            UiSnackbar.show({
-                                text: 'Grupo não encontrado. Verifique se ele não foi excluído.'
-                            });
-                            break;
-                        case 5:
                         case 1:
+                            UiSnackbar.show({
+                                text: 'Cliente não encontrado. Verifique se ele foi excluído.'
+                            });
+                            break;
+                        default:
                             UiSnackbar.show({
                                 text: error.message
                             });

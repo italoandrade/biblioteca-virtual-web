@@ -14,6 +14,10 @@ import {NotFoundModule} from './views/not-found/not-found.module';
 import {HomeModule} from './views/home/home.module';
 import {ClienteModule} from './views/cliente/cliente.module';
 import {EditoraModule} from './views/editora/editora.module';
+import {AutorModule} from './views/autor/autor.module';
+import {LivroModule} from './views/livro/livro.module';
+import {CatalogoModule} from './views/catalogo/catalogo.module';
+import {HistoricoModule} from './views/historico/historico.module';
 
 @NgModule({
     declarations: [
@@ -27,6 +31,10 @@ import {EditoraModule} from './views/editora/editora.module';
         NotFoundModule,
         ClienteModule,
         EditoraModule,
+        AutorModule,
+        LivroModule,
+        CatalogoModule,
+        HistoricoModule,
 
         AppRoutingModule
     ],

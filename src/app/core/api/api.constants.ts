@@ -43,6 +43,10 @@ export const APIS = {
             method: 'get',
             url: `${environment.host}editora`
         },
+        selecionarSimples: {
+            method: 'get',
+            url: `${environment.host}editora-simples`
+        },
         selecionarPorId: {
             method: 'get',
             url: `${environment.host}editora/:id`
@@ -59,5 +63,69 @@ export const APIS = {
             method: 'delete',
             url: `${environment.host}editora/:id`
         }
+    },
+    autor: {
+        selecionar: {
+            method: 'get',
+            url: `${environment.host}autor`
+        },
+        selecionarSimples: {
+            method: 'get',
+            url: `${environment.host}autor-simples`
+        },
+        selecionarPorId: {
+            method: 'get',
+            url: `${environment.host}autor/:id`
+        },
+        inserir: {
+            method: 'post',
+            url: `${environment.host}autor`
+        },
+        atualizar: {
+            method: 'put',
+            url: `${environment.host}autor/:id`
+        },
+        remover: {
+            method: 'delete',
+            url: `${environment.host}autor/:id`
+        }
+    },
+    livro: {
+        selecionar: {
+            method: 'get',
+            url: `${environment.host}livro`
+        },
+        selecionarPorId: {
+            method: 'get',
+            url: `${environment.host}livro/:id`
+        },
+        inserir: {
+            method: 'post',
+            url: `${environment.host}livro`
+        },
+        atualizar: {
+            method: 'put',
+            url: `${environment.host}livro/:id`
+        },
+        remover: {
+            method: 'delete',
+            url: `${environment.host}livro/:id`
+        }
+    },
+    catalogo: {
+        selecionar: {
+            method: 'post',
+            url: `${environment.host}selecionar-catalogo`
+        },
+        efetuarEmprestimo: {
+            method: 'post',
+            url: `${environment.host}catalogo/livro/:id/efetuar-emprestimo`
+        },
+    },
+    emprestimo: {
+        selecionarHistorico: {
+            method: 'get',
+            url: `${environment.host}historico-emprestimo`
+        },
     },
 };

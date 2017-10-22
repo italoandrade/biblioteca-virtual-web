@@ -1,10 +1,10 @@
-<div class="ui-s960">
+<div class="ui-s480">
     <ui-card class="elevate-on-toolbar">
         <div class="ui-progress" [class.hide]="!(loading && !searching)">
             <div class="indeterminate"></div>
         </div>
-        <ui-toolbar class="flat transparent">
-            <span class="title" [ngClass]="{'hide': searchOpen}">Lista de clientes</span>
+        <ui-toolbar class="flat">
+            <span class="title" [ngClass]="{'hide': searchOpen}">Lista de autores</span>
             <div class="align-right">
                 <form #searchForm="ngForm" name="searchForm" class="ui-validate on-dirty"
                       [ngClass]="{'open': searchOpen}">
@@ -28,43 +28,22 @@
                 </button>
             </div>
         </ui-toolbar>
-        <ui-data-table class="responsive">
+        <ui-data-table>
             <tbody>
             <tr>
-                <th class="picture">
-                </th>
                 <th uiDataTableOrderBy (click)="toggleOrderBy('nome')">
                     Nome
                 </th>
-                <th uiDataTableOrderBy (click)="toggleOrderBy('email')">
-                    E-mail
-                </th>
-                <th uiDataTableOrderBy (click)="toggleOrderBy('cpf')">
-                    CPF
-                </th>
             </tr>
-            <tr *ngFor="let cliente of clientes" [routerLink]="cliente.id ? ['/cliente', cliente.id] : null"
-                (click)="!cliente.id ? notAClient(cliente) : null">
-                <td class="picture">
-                    <div class="letter"
-                         [ngStyle]="{'background-color': cliente.cor, 'color': isBright(cliente.cor) ? '#000' : '#FFF'}">
-                        {{cliente.nome.charAt(0)}}
-                    </div>
-                </td>
-                <td data-title="Nome" [class.empty]="!cliente.nome">
+            <tr *ngFor="let autor of autores" [routerLink]="['/autor', autor.id]">
+                <td>
                     <span class="ellipsis">
-                        {{cliente.nome}}
+                    {{autor.nome}}
                     </span>
                 </td>
-                <td data-title="E-mail" class="no-wrap" [class.empty]="!cliente.email">
-                    {{cliente.email}}
-                </td>
-                <td data-title="CPF" class="no-wrap" [class.empty]="!cliente.cpf">
-                    {{cliente.cpf | uiCpf}}
-                </td>
             </tr>
-            <tr class="empty" *ngIf="!clientes || !clientes.length">
-                <td colspan="4">{{loading ? 'Carregando...' : 'Nenhum cliente encontrado'}}</td>
+            <tr class="empty" *ngIf="!autores || !autores.length">
+                <td colspan="1">{{loading ? 'Carregando...' : 'Nenhum autor encontrado'}}</td>
             </tr>
             </tbody>
             <tfoot>
@@ -76,11 +55,11 @@
                             lineCount}} de {{lineCount}}
                         </span>
                         <button class="ui-button flat icon" uiRipple [disabled]="page < 2"
-                                (click)="page = page - 1; getClientes();">
+                                (click)="page = page - 1; getAutores();">
                             <i class="material-icons">keyboard_arrow_left</i>
                         </button>
-                        <button class="ui-button flat icon" uiRipple [disabled]="lineCount < page * 10"
-                                (click)="page = page + 1; getClientes();">
+                        <button class="ui-button flat icon" uiRipple [disabled]="lineCount < this.page * 10"
+                                (click)="page = page + 1; getAutores();">
                             <i class="material-icons">keyboard_arrow_right</i>
                         </button>
                     </div>
@@ -89,4 +68,11 @@
             </tfoot>
         </ui-data-table>
     </ui-card>
+    <div class="ui-fab-container">
+        <a class="ui-button primary fab" uiRipple [routerLink]="['/autor/novo']">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
 </div>
+
+<div style="height: 80px"></div>

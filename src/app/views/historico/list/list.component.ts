@@ -3,18 +3,19 @@ import {Router} from '@angular/router';
 
 import {Subject} from 'rxjs/Subject';
 
-import {UiToolbarService, UiElement, UiColor, UiSnackbar} from 'ng-smn-ui';
+import {UiToolbarService, UiElement, UiColor} from 'ng-smn-ui';
 
 import {ApiService} from '../../../core/api/api.service';
 
 @Component({
-    selector: 'app-cliente-list',
+    selector: 'app-historico-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss']
+    styleUrls: ['./list.component.scss'],
+    providers: [UiColor]
 })
 
-export class ClienteListComponent implements AfterViewInit, OnInit, OnDestroy {
-    clientes: any;
+export class HistoricoListComponent implements OnInit, AfterViewInit, OnDestroy {
+    emprestimos: any;
     searchOpen: boolean;
     searching: boolean;
     loading: boolean;
@@ -23,15 +24,14 @@ export class ClienteListComponent implements AfterViewInit, OnInit, OnDestroy {
     lineCount: number;
     page: number;
     orderBy: string[];
-    isBright = UiColor.isBright;
 
     constructor(private toolbarService: UiToolbarService,
                 private element: ElementRef,
                 private api: ApiService,
-                private router: Router,
                 private changeDetectorRef: ChangeDetectorRef) {
         this.page = 1;
         this.orderBy = [];
+        this.emprestimos = [];
     }
 
     ngOnInit() {
@@ -40,15 +40,15 @@ export class ClienteListComponent implements AfterViewInit, OnInit, OnDestroy {
             .distinctUntilChanged()
             .subscribe(() => {
                 this.searching = true;
-                this.getClientes();
+                this.getEmprestimos();
             });
     }
 
     ngAfterViewInit() {
-        this.toolbarService.set('Clientes');
-        this.toolbarService.activateExtendedToolbar(960);
+        this.toolbarService.set('Histórico');
+        this.toolbarService.activateExtendedToolbar(600);
 
-        this.getClientes();
+        this.getEmprestimos();
     }
 
     ngOnDestroy() {
@@ -66,7 +66,7 @@ export class ClienteListComponent implements AfterViewInit, OnInit, OnDestroy {
             this.searchOpen = false;
             UiElement.closest(inputSearch, 'form').style.right = '';
             this.searchText = '';
-            this.getClientes();
+            this.getEmprestimos();
         } else {
             this.searchOpen = true;
             UiElement.closest(inputSearch, 'form').style.right = UiElement.closest(inputSearch, '.align-right').clientWidth + 'px';
@@ -77,26 +77,22 @@ export class ClienteListComponent implements AfterViewInit, OnInit, OnDestroy {
         }
     }
 
-    getClientes() {
+    getEmprestimos() {
         if (!this.loading && (!this.searchText || this.searchText.length <= 200)) {
             this.loading = true;
             this.changeDetectorRef.detectChanges();
 
             this.api
-                .prep('cliente', 'selecionar')
+                .prep('emprestimo', 'selecionarHistorico')
                 .call({
                     search: this.searchText || '',
                     page: this.page || 1,
                     order: this.orderBy.join(',')
                 })
                 .subscribe(data => {
+                    this.emprestimos = data.data;
                     this.lineCount = data.lineCount;
-                    this.clientes = data.data;
-                }, error => {
-                    if (error.status === 401) {
-                        this.router.navigate(['']);
-                    }
-                }, () => {
+                }, null, () => {
                     this.loading = false;
                     this.searching = false;
                 });
@@ -120,12 +116,6 @@ export class ClienteListComponent implements AfterViewInit, OnInit, OnDestroy {
         } else {
             this.orderBy.push(column + '-DESC');
         }
-        this.getClientes();
-    }
-
-    notAClient(cliente) {
-        UiSnackbar.show({
-            text: 'O usuário ' + cliente.nome + ' não tem informação de cliente cadastrada'
-        });
+        this.getEmprestimos();
     }
 }

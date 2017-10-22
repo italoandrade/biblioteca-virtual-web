@@ -1,0 +1,27 @@
+@import '~ng-smn-ui/core/variables';
+
+:host {
+    display: block;
+
+    ui-card {
+        position: relative;
+        margin-bottom: 20px;
+
+        .ui-progress {
+            position: absolute;
+        }
+
+        .image {
+            width: 300px;
+            float: left;
+            margin-right: 16px;
+        }
+
+        @include mobile {
+            .image {
+                float: none;
+                width: 100%;
+            }
+        }
+    }
+}

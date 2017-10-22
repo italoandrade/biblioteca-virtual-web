@@ -46,6 +46,18 @@
                     </span>
                     Início
                 </a>
+                <a class="ui-list-item" uiRipple routerLink="/catalogo" [routerLinkActive]="['active']">
+                    <span class="icon">
+                        <i class="material-icons">view_module</i>
+                    </span>
+                    Catálogo
+                </a>
+                <a class="ui-list-item" uiRipple routerLink="/historico" [routerLinkActive]="['active']">
+                    <span class="icon">
+                        <i class="material-icons">history</i>
+                    </span>
+                    Histórico
+                </a>
                 <div *ngIf="usuario.idTipoUsuario === 1">
                     <div class="ui-divider"></div>
                     <div class="ui-list-item subheader">Administrativo</div>
@@ -54,6 +66,18 @@
                             <i class="material-icons">group</i>
                         </span>
                         Clientes
+                    </a>
+                    <a class="ui-list-item" uiRipple routerLink="/livro" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">book</i>
+                        </span>
+                        Livros
+                    </a>
+                    <a class="ui-list-item" uiRipple routerLink="/autor" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        Autores
                     </a>
                     <a class="ui-list-item" uiRipple routerLink="/editora" [routerLinkActive]="['active']">
                         <span class="icon">
@@ -64,7 +88,13 @@
                 </div>
             </div>
             <div *ngIf="!usuario">
-
+                <a class="ui-list-item" uiRipple routerLink="/catalogo" [routerLinkActive]="['active']">
+                    <span class="icon">
+                        <i class="material-icons">view_module</i>
+                    </span>
+                    Catálogo
+                </a>
+                <div class="ui-divider"></div>
                 <a class="ui-list-item" uiRipple routerLink="/signin">
                     <span class="icon">
                         <i class="material-icons">person</i>

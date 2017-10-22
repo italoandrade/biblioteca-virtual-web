@@ -1,10 +1,10 @@
-<div class="ui-s960">
+<div class="ui-s480">
     <ui-card class="elevate-on-toolbar">
         <div class="ui-progress" [class.hide]="!(loading && !searching)">
             <div class="indeterminate"></div>
         </div>
-        <ui-toolbar class="flat transparent">
-            <span class="title" [ngClass]="{'hide': searchOpen}">Lista de clientes</span>
+        <ui-toolbar class="flat">
+            <span class="title" [ngClass]="{'hide': searchOpen}">Lista de livros</span>
             <div class="align-right">
                 <form #searchForm="ngForm" name="searchForm" class="ui-validate on-dirty"
                       [ngClass]="{'open': searchOpen}">
@@ -31,40 +31,35 @@
         <ui-data-table class="responsive">
             <tbody>
             <tr>
-                <th class="picture">
+                <th uiDataTableOrderBy (click)="toggleOrderBy('titulo')">
+                    Título
                 </th>
-                <th uiDataTableOrderBy (click)="toggleOrderBy('nome')">
-                    Nome
+                <th uiDataTableOrderBy (click)="toggleOrderBy('nomeAutor')">
+                    Autor
                 </th>
-                <th uiDataTableOrderBy (click)="toggleOrderBy('email')">
-                    E-mail
-                </th>
-                <th uiDataTableOrderBy (click)="toggleOrderBy('cpf')">
-                    CPF
+                <th uiDataTableOrderBy (click)="toggleOrderBy('nomeEditora')">
+                    Editora
                 </th>
             </tr>
-            <tr *ngFor="let cliente of clientes" [routerLink]="cliente.id ? ['/cliente', cliente.id] : null"
-                (click)="!cliente.id ? notAClient(cliente) : null">
-                <td class="picture">
-                    <div class="letter"
-                         [ngStyle]="{'background-color': cliente.cor, 'color': isBright(cliente.cor) ? '#000' : '#FFF'}">
-                        {{cliente.nome.charAt(0)}}
-                    </div>
-                </td>
-                <td data-title="Nome" [class.empty]="!cliente.nome">
+            <tr *ngFor="let livro of livros" [routerLink]="['/livro', livro.id]">
+                <td data-title="Título" [class.empty]="!livro.titulo">
                     <span class="ellipsis">
-                        {{cliente.nome}}
+                    {{livro.titulo}}
                     </span>
                 </td>
-                <td data-title="E-mail" class="no-wrap" [class.empty]="!cliente.email">
-                    {{cliente.email}}
+                <td data-title="Autor" [class.empty]="!livro.nomeAutor">
+                    <span class="ellipsis">
+                    {{livro.nomeAutor}}
+                    </span>
                 </td>
-                <td data-title="CPF" class="no-wrap" [class.empty]="!cliente.cpf">
-                    {{cliente.cpf | uiCpf}}
+                <td data-title="Editora" [class.empty]="!livro.nomeEditora">
+                    <span class="ellipsis">
+                    {{livro.nomeEditora}}
+                    </span>
                 </td>
             </tr>
-            <tr class="empty" *ngIf="!clientes || !clientes.length">
-                <td colspan="4">{{loading ? 'Carregando...' : 'Nenhum cliente encontrado'}}</td>
+            <tr class="empty" *ngIf="!livros || !livros.length">
+                <td colspan="1">{{loading ? 'Carregando...' : 'Nenhum livro encontrado'}}</td>
             </tr>
             </tbody>
             <tfoot>
@@ -76,11 +71,11 @@
                             lineCount}} de {{lineCount}}
                         </span>
                         <button class="ui-button flat icon" uiRipple [disabled]="page < 2"
-                                (click)="page = page - 1; getClientes();">
+                                (click)="page = page - 1; getLivros();">
                             <i class="material-icons">keyboard_arrow_left</i>
                         </button>
-                        <button class="ui-button flat icon" uiRipple [disabled]="lineCount < page * 10"
-                                (click)="page = page + 1; getClientes();">
+                        <button class="ui-button flat icon" uiRipple [disabled]="lineCount < this.page * 10"
+                                (click)="page = page + 1; getLivros();">
                             <i class="material-icons">keyboard_arrow_right</i>
                         </button>
                     </div>
@@ -89,4 +84,11 @@
             </tfoot>
         </ui-data-table>
     </ui-card>
+    <div class="ui-fab-container">
+        <a class="ui-button primary fab" uiRipple [routerLink]="['/livro/novo']">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
 </div>
+
+<div style="height: 80px"></div>

@@ -1,0 +1,41 @@
+<div class="ui-s600">
+    <ui-card class="elevate-on-toolbar" [class.loading]="loading">
+        <div class="ui-progress" [class.hide]="!loading">
+            <div class="indeterminate"></div>
+        </div>
+        <fieldset [disabled]="loading">
+            <img *ngIf="info.imagem" class="image" uiLazyLoad [lazy-src]="info.imagem">
+            <ui-card-title>{{info.titulo}}</ui-card-title>
+            <ui-card-content>
+                <p *ngIf="info.sinopse">{{info.sinopse}}</p>
+                <div>
+                    <strong>Autor:</strong> {{info.nomeAutor}}
+                </div>
+                <div *ngIf="info.nomeEditora">
+                    <strong>Editora:</strong> {{info.nomeEditora}}
+                </div>
+            </ui-card-content>
+        </fieldset>
+    </ui-card>
+    <div class="ui-fab-container">
+        <button class="ui-button primary fab" uiRipple [class.hide]="loading" [uiDialogTrigger]="emprestimoDialog">
+            <ui-progress-radial class="indeterminate" *ngIf="saving"></ui-progress-radial>
+            <i class="material-icons">add</i>
+        </button>
+    </div>
+</div>
+
+<ui-dialog #emprestimoDialog card-size="400">
+    <ui-card-title>Confirmar reserva</ui-card-title>
+    <ui-card-subtitle>{{info.titulo}}</ui-card-subtitle>
+    <ui-card-content>
+        Ele deverá ser devolvido até {{nextWeek | date : 'shortDate'}}
+    </ui-card-content>
+    <div class="ui-button-container cover">
+        <button class="ui-button flat" uiRipple (click)="emprestimoDialog.close()">Fechar</button>
+        <button class="ui-button success" uiRipple (click)="emprestimoDialog.close(); efetuarEmprestimo()">Reservar
+        </button>
+    </div>
+</ui-dialog>
+
+<div style="height: 80px"></div>

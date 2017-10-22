@@ -1,0 +1,67 @@
+<div class="ui-s1600">
+    <ui-card class="filtro">
+        <ui-card-content>
+            <ui-subheader>Filtro</ui-subheader>
+            <div class="ui-flex-container">
+                <ui-input-container>
+                    <ui-select #fieldIdAutor="ngModel"
+                               name="idAutor"
+                               [(ngModel)]="filtroAutor"
+                               [options]="autores"
+                               [chosen]="true"
+                               value="id"
+                               label="nome"
+                               uiInput
+                               id="inputIdAutor"
+                               (ngModelChange)="getCatalogo()"></ui-select>
+                    <label for="inputIdAutor">
+                        {{!autores.carregando && autores.carregado ? 'Autor' :
+                        'Carregando autores'}}
+                    </label>
+                </ui-input-container>
+                <ui-input-container>
+                    <ui-select #fieldIdAutor="ngModel"
+                               name="idEditora"
+                               [(ngModel)]="filtroEditora"
+                               [options]="editoras"
+                               [chosen]="true"
+                               value="id"
+                               label="nome"
+                               uiInput
+                               id="inputIdEditora"
+                               (ngModelChange)="getCatalogo()"></ui-select>
+                    <label for="inputIdEditora">
+                        {{!editoras.carregando && editoras.carregado ? 'Editora' :
+                        'Carregando editoras'}}
+                    </label>
+                </ui-input-container>
+            </div>
+            <ui-input-container>
+                <input id="inputTitulo" #fieldTitulo="ngModel" type="text" [(ngModel)]="filtroTitulo"
+                       uiInput name="titulo" uiMaxlength="100" (keyup)="search(fieldTitulo.value)">
+                <label for="inputTitulo">Titulo</label>
+                <div class="ui-messages">
+                    <div *ngIf="fieldTitulo.errors && fieldTitulo.dirty">
+                        <div class="ui-message counter error" [hidden]="!fieldTitulo.errors.uiMaxlength">
+                            {{filtroTitulo ? filtroTitulo.length : 0}}/255
+                        </div>
+                    </div>
+                </div>
+            </ui-input-container>
+        </ui-card-content>
+    </ui-card>
+
+    <div class="livros">
+        <a class="livro" *ngFor="let livro of livros" [routerLink]="['/catalogo/livro/', livro.id]">
+            <ui-card class="raising">
+                <div class="imagem" [style.background-image]="livro.imagem ? 'url(' + livro.imagem + ')' : null"></div>
+                <div class="titulo">{{livro.titulo}}</div>
+            </ui-card>
+        </a>
+        <div *ngIf="!livros.carregando && !livros.length" class="secondary-text">Nenhum livro encontrado</div>
+    </div>
+
+    <div class="loading" *ngIf="livros.carregando">
+        <ui-progress-radial class="indeterminate primary"></ui-progress-radial>
+    </div>
+</div>
