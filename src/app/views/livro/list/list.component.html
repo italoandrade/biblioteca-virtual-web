@@ -1,4 +1,4 @@
-<div class="ui-s480">
+<div class="ui-s600">
     <ui-card class="elevate-on-toolbar">
         <div class="ui-progress" [class.hide]="!(loading && !searching)">
             <div class="indeterminate"></div>
@@ -40,6 +40,9 @@
                 <th uiDataTableOrderBy (click)="toggleOrderBy('nomeEditora')">
                     Editora
                 </th>
+                <th uiDataTableOrderBy (click)="toggleOrderBy('estoque')" class="align-right">
+                    Estoque total
+                </th>
             </tr>
             <tr *ngFor="let livro of livros" [routerLink]="['/livro', livro.id]">
                 <td data-title="Título" [class.empty]="!livro.titulo">
@@ -56,6 +59,9 @@
                     <span class="ellipsis">
                     {{livro.nomeEditora}}
                     </span>
+                </td>
+                <td data-title="Estoque total" [class.empty]="!livro.estoque" class="align-right">
+                    {{livro.estoque}}
                 </td>
             </tr>
             <tr class="empty" *ngIf="!livros || !livros.length">
@@ -85,7 +91,7 @@
         </ui-data-table>
     </ui-card>
     <div class="ui-fab-container">
-        <a class="ui-button primary fab" uiRipple [routerLink]="['/livro/novo']">
+        <a class="ui-button accent fab" uiRipple [routerLink]="['/livro/novo']">
             <i class="material-icons">add</i>
         </a>
     </div>

@@ -117,15 +117,35 @@ export const APIS = {
             method: 'post',
             url: `${environment.host}selecionar-catalogo`
         },
-        efetuarEmprestimo: {
+        efetuarReserva: {
             method: 'post',
-            url: `${environment.host}catalogo/livro/:id/efetuar-emprestimo`
+            url: `${environment.host}catalogo/livro/:id/efetuar-reserva`
         },
     },
     emprestimo: {
+        selecionar: {
+            method: 'get',
+            url: `${environment.host}emprestimo`
+        },
         selecionarHistorico: {
             method: 'get',
             url: `${environment.host}historico-emprestimo`
+        },
+        cancelarReservaUsuario: {
+            method: 'put',
+            url: `${environment.host}emprestimo-usuario/:id/cancelar-reserva`
+        },
+        cancelarReserva: {
+            method: 'put',
+            url: `${environment.host}emprestimo/:id/cancelar-reserva`
+        },
+        marcarEmprestado: {
+            method: 'put',
+            url: `${environment.host}emprestimo/:id/marcar-emprestado`
+        },
+        marcarDevolvido: {
+            method: 'put',
+            url: `${environment.host}emprestimo/:id/marcar-devolvido`
         },
     },
 };

@@ -1,4 +1,4 @@
-<ui-toolbar class="fixed flat elevate-on-scroll accent" id="app-header">
+<ui-toolbar class="fixed flat elevate-on-scroll primary" id="app-header">
     <button (click)="menuOpen = true" class="ui-button flat icon" uiRipple>
         <i class="material-icons">menu</i>
     </button>
@@ -39,28 +39,35 @@
     <div class="ui-nav-drawer-overflow">
         <div class="ui-list">
             <div *ngIf="usuario">
-                <a class="ui-list-item" uiRipple routerLink="/" [routerLinkActive]="['active']"
-                   [routerLinkActiveOptions]="{ exact: true }">
-                    <span class="icon">
-                        <i class="material-icons">home</i>
-                    </span>
-                    Início
-                </a>
-                <a class="ui-list-item" uiRipple routerLink="/catalogo" [routerLinkActive]="['active']">
-                    <span class="icon">
-                        <i class="material-icons">view_module</i>
-                    </span>
-                    Catálogo
-                </a>
-                <a class="ui-list-item" uiRipple routerLink="/historico" [routerLinkActive]="['active']">
-                    <span class="icon">
-                        <i class="material-icons">history</i>
-                    </span>
-                    Histórico
-                </a>
+                <div *ngIf="usuario.idTipoUsuario !== 1">
+                    <a class="ui-list-item" uiRipple routerLink="/" [routerLinkActive]="['active']"
+                       [routerLinkActiveOptions]="{ exact: true }">
+                        <span class="icon">
+                            <i class="material-icons">home</i>
+                        </span>
+                        Início
+                    </a>
+                    <a class="ui-list-item" uiRipple routerLink="/catalogo" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">view_module</i>
+                        </span>
+                        Catálogo
+                    </a>
+                    <a class="ui-list-item" uiRipple routerLink="/historico" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">history</i>
+                        </span>
+                        Histórico
+                    </a>
+                </div>
                 <div *ngIf="usuario.idTipoUsuario === 1">
-                    <div class="ui-divider"></div>
                     <div class="ui-list-item subheader">Administrativo</div>
+                    <a class="ui-list-item" uiRipple routerLink="/emprestimo" [routerLinkActive]="['active']">
+                        <span class="icon">
+                            <i class="material-icons">history</i>
+                        </span>
+                        Empréstimos
+                    </a>
                     <a class="ui-list-item" uiRipple routerLink="/cliente" [routerLinkActive]="['active']">
                         <span class="icon">
                             <i class="material-icons">group</i>

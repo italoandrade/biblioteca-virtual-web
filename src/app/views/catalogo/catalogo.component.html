@@ -54,7 +54,9 @@
     <div class="livros">
         <a class="livro" *ngFor="let livro of livros" [routerLink]="['/catalogo/livro/', livro.id]">
             <ui-card class="raising">
-                <div class="imagem" [style.background-image]="livro.imagem ? 'url(' + livro.imagem + ')' : null"></div>
+                <div class="imagem" [style.background-image]="livro.imagem ? 'url(' + livro.imagem + ')' : null">
+                    <div class="esgotado" *ngIf="livro.esgotado">Esgotado</div>
+                </div>
                 <div class="titulo">{{livro.titulo}}</div>
             </ui-card>
         </a>

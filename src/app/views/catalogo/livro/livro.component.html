@@ -18,7 +18,7 @@
         </fieldset>
     </ui-card>
     <div class="ui-fab-container">
-        <button class="ui-button primary fab" uiRipple [class.hide]="loading" [uiDialogTrigger]="emprestimoDialog">
+        <button class="ui-button accent fab" uiRipple [class.hide]="loading" [uiDialogTrigger]="emprestimoDialog">
             <ui-progress-radial class="indeterminate" *ngIf="saving"></ui-progress-radial>
             <i class="material-icons">add</i>
         </button>
@@ -29,11 +29,19 @@
     <ui-card-title>Confirmar reserva</ui-card-title>
     <ui-card-subtitle>{{info.titulo}}</ui-card-subtitle>
     <ui-card-content>
-        Ele deverá ser devolvido até {{nextWeek | date : 'shortDate'}}
+        <div *ngIf="info.estoqueDisponivel > 0">
+            Após a reserva, você deverá retira-lo na biblioteca da Unifran e ele deverá ser devolvido até {{nextWeek |
+            date :
+            'shortDate'}}
+        </div>
+        <div *ngIf="info.estoqueDisponivel <= 0">
+            Livro esgotado
+        </div>
     </ui-card-content>
     <div class="ui-button-container cover">
         <button class="ui-button flat" uiRipple (click)="emprestimoDialog.close()">Fechar</button>
-        <button class="ui-button success" uiRipple (click)="emprestimoDialog.close(); efetuarEmprestimo()">Reservar
+        <button class="ui-button success" uiRipple (click)="emprestimoDialog.close(); efetuarEmprestimo()"
+                [disabled]="info.estoqueDisponivel <= 0">Reservar
         </button>
     </div>
 </ui-dialog>

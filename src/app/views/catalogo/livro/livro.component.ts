@@ -15,7 +15,6 @@ import {UsuarioService} from '../../../core/services/usuario.service';
 export class CatalogoLivroComponent implements OnInit, AfterViewInit, OnDestroy {
     info: any;
     saving: boolean;
-    deleting: boolean;
     addingNew: boolean;
     loading = true;
     autores;
@@ -84,13 +83,13 @@ export class CatalogoLivroComponent implements OnInit, AfterViewInit, OnDestroy 
             this.saving = true;
 
             this.api
-                .prep('catalogo', 'efetuarEmprestimo')
+                .prep('catalogo', 'efetuarReserva')
                 .call({
                     id: this.route.snapshot.params['id']
                 })
-                .subscribe(data => {
+                .subscribe(() => {
                     UiSnackbar.show({
-                        text: 'Empréstimo efetuado com sucesso'
+                        text: 'Reserva efetuada com sucesso'
                     });
                 }, null, () => {
                     this.saving = false;

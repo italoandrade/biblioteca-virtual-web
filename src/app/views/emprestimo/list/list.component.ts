@@ -3,19 +3,19 @@ import {Router} from '@angular/router';
 
 import {Subject} from 'rxjs/Subject';
 
-import {UiToolbarService, UiElement, UiColor} from 'ng-smn-ui';
+import {UiToolbarService, UiElement, UiColor, UiSnackbar} from 'ng-smn-ui';
 
 import {ApiService} from '../../../core/api/api.service';
 
 @Component({
-    selector: 'app-livro-list',
+    selector: 'app-emprestimo-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
     providers: [UiColor]
 })
 
-export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
-    livros: any;
+export class EmprestimoListComponent implements OnInit, AfterViewInit, OnDestroy {
+    emprestimos: any;
     searchOpen: boolean;
     searching: boolean;
     loading: boolean;
@@ -24,6 +24,7 @@ export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
     lineCount: number;
     page: number;
     orderBy: string[];
+    alterarStatusItem;
 
     constructor(private toolbarService: UiToolbarService,
                 private element: ElementRef,
@@ -31,6 +32,8 @@ export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
                 private changeDetectorRef: ChangeDetectorRef) {
         this.page = 1;
         this.orderBy = [];
+        this.emprestimos = [];
+        this.alterarStatusItem = {};
     }
 
     ngOnInit() {
@@ -39,15 +42,15 @@ export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
             .distinctUntilChanged()
             .subscribe(() => {
                 this.searching = true;
-                this.getLivros();
+                this.getEmprestimos();
             });
     }
 
     ngAfterViewInit() {
-        this.toolbarService.set('Livros');
-        this.toolbarService.activateExtendedToolbar(600);
+        this.toolbarService.set('Empréstimos');
+        this.toolbarService.activateExtendedToolbar(960);
 
-        this.getLivros();
+        this.getEmprestimos();
     }
 
     ngOnDestroy() {
@@ -65,7 +68,7 @@ export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
             this.searchOpen = false;
             UiElement.closest(inputSearch, 'form').style.right = '';
             this.searchText = '';
-            this.getLivros();
+            this.getEmprestimos();
         } else {
             this.searchOpen = true;
             UiElement.closest(inputSearch, 'form').style.right = UiElement.closest(inputSearch, '.align-right').clientWidth + 'px';
@@ -76,20 +79,20 @@ export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    getLivros() {
+    getEmprestimos() {
         if (!this.loading && (!this.searchText || this.searchText.length <= 200)) {
             this.loading = true;
             this.changeDetectorRef.detectChanges();
 
             this.api
-                .prep('livro', 'selecionar')
+                .prep('emprestimo', 'selecionar')
                 .call({
                     search: this.searchText || '',
                     page: this.page || 1,
                     order: this.orderBy.join(',')
                 })
                 .subscribe(data => {
-                    this.livros = data.data;
+                    this.emprestimos = data.data;
                     this.lineCount = data.lineCount;
                 }, null, () => {
                     this.loading = false;
@@ -115,8 +118,68 @@ export class LivroListComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.orderBy.push(column + '-DESC');
         }
-        this.getLivros();
+        this.getEmprestimos();
+    }
+
+    cancelReserva() {
+        if (!this.alterarStatusItem.loading) {
+            this.alterarStatusItem.loading = true;
+
+            this.api
+                .prep('emprestimo', 'cancelarReserva')
+                .call({
+                    id: this.alterarStatusItem.id
+                })
+                .subscribe(() => {
+                    this.emprestimos.splice(this.emprestimos.indexOf(this.alterarStatusItem), 1);
+                    UiSnackbar.show({
+                        text: 'Reserva cancelada com sucesso'
+                    });
+                }, null, () => {
+                    this.alterarStatusItem.loading = false;
+                });
+        }
+    }
+
+    markAsEmprestado() {
+        if (!this.alterarStatusItem.loading) {
+            this.alterarStatusItem.loading = true;
+
+            this.api
+                .prep('emprestimo', 'marcarEmprestado')
+                .call({
+                    id: this.alterarStatusItem.id
+                })
+                .subscribe(() => {
+                    this.alterarStatusItem.dataEmprestimo = new Date();
+                    this.alterarStatusItem.status = 'No prazo';
+                    UiSnackbar.show({
+                        text: 'Empréstimo marcado como emprestado com sucesso'
+                    });
+                }, null, () => {
+                    this.alterarStatusItem.loading = false;
+                });
+        }
+    }
+
+    markAsDevolvido() {
+        if (!this.alterarStatusItem.loading) {
+            this.alterarStatusItem.loading = true;
+
+            this.api
+                .prep('emprestimo', 'marcarDevolvido')
+                .call({
+                    id: this.alterarStatusItem.id
+                })
+                .subscribe(() => {
+                    this.alterarStatusItem.dataDevolucao = new Date();
+                    this.alterarStatusItem.status = 'Devolvido';
+                    UiSnackbar.show({
+                        text: 'Empréstimo marcado como devolvido com sucesso'
+                    });
+                }, null, () => {
+                    this.alterarStatusItem.loading = false;
+                });
+        }
     }
 }
-
-/**/

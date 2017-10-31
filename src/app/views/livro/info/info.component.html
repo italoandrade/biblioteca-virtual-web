@@ -57,7 +57,7 @@
                                     Digite um titulo
                                 </div>
                                 <div class="ui-message counter error" [hidden]="!fieldTitulo.errors.uiMaxlength">
-                                    {{info.filtroTitulo ? info.filtroTitulo.length : 0}}/255
+                                    {{info.titulo ? info.titulo.length : 0}}/255
                                 </div>
                             </div>
                         </div>
@@ -113,6 +113,22 @@
                                 <div class="ui-message counter error"
                                      [hidden]="!fieldSinopse.errors.uiMaxlength">
                                     {{info.sinopse ? info.sinopse.length : 0}}/500
+                                </div>
+                            </div>
+                        </div>
+                    </ui-input-container>
+                    <ui-input-container>
+                        <input id="inputEstoque" #fieldEstoque="ngModel" type="tel" [(ngModel)]="info.estoque"
+                               uiInput name="estoque" required uiMaskInteger [min]="0" [max]="1000">
+                        <label for="inputEstoque">Estoque</label>
+                        <div class="ui-messages">
+                            <div *ngIf="fieldEstoque.errors && fieldEstoque.dirty">
+                                <div class="ui-message error"
+                                     [hidden]="!fieldEstoque.pristine && !fieldEstoque.errors.required">
+                                    Digite uma quantidade de estoque
+                                </div>
+                                <div class="ui-message error" [hidden]="!fieldEstoque.errors.max">
+                                    Digite uma quantidade de estoque menor ou igual a 1000
                                 </div>
                             </div>
                         </div>

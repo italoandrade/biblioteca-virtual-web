@@ -4,7 +4,7 @@
             <div class="indeterminate"></div>
         </div>
         <ui-toolbar class="flat">
-            <span class="title" [ngClass]="{'hide': searchOpen}">Histórico de empréstimos</span>
+            <span class="title" [ngClass]="{'hide': searchOpen}">Empréstimos recentes</span>
             <div class="align-right">
                 <form #searchForm="ngForm" name="searchForm" class="ui-validate on-dirty"
                       [ngClass]="{'open': searchOpen}">
@@ -34,6 +34,9 @@
                 <th uiDataTableOrderBy (click)="toggleOrderBy('livro')">
                     Livro
                 </th>
+                <th uiDataTableOrderBy (click)="toggleOrderBy('cliente')">
+                    Cliente
+                </th>
                 <th uiDataTableOrderBy (click)="toggleOrderBy('dataReserva')">
                     Data da reserva
                 </th>
@@ -46,13 +49,18 @@
                 <th uiDataTableOrderBy (click)="toggleOrderBy('status')">
                     Status
                 </th>
-                <th class="align-right">
+                <th>
                 </th>
             </tr>
             <tr *ngFor="let livro of emprestimos">
                 <td data-title="Título" [class.empty]="!livro.livro">
                     <span class="ellipsis">
                     {{livro.livro}}
+                    </span>
+                </td>
+                <td data-title="Cliente" [class.empty]="!livro.nomeCliente">
+                    <span class="ellipsis">
+                    {{livro.nomeCliente}}
                     </span>
                 </td>
                 <td data-title="Data da reserva" [class.empty]="!livro.dataReserva">
@@ -68,15 +76,15 @@
                     {{livro.status}}
                 </td>
                 <td class="align-right">
-                    <button class="ui-button icon flat" uiRipple [uiMenuTrigger]="menuCancel"
-                            *ngIf="!livro.dataEmprestimo && !livro.dataDevolucao" (click)="cancelItem = livro">
-                        <ui-progress-radial class="indeterminate" *ngIf="livro.canceling"></ui-progress-radial>
-                        <i class="material-icons">settings_backup_restore</i>
+                    <button class="ui-button icon flat" uiRipple (click)="alterarStatusItem = livro"
+                            [uiDialogTrigger]="alterarStatusDialog" *ngIf="!livro.dataDevolucao">
+                        <ui-progress-radial class="indeterminate" *ngIf="livro.loading"></ui-progress-radial>
+                        <i class="material-icons">edit</i>
                     </button>
                 </td>
             </tr>
             <tr class="empty" *ngIf="!emprestimos || !emprestimos.length">
-                <td colspan="6">{{loading ? 'Carregando...' : 'Nenhum livro encontrado'}}</td>
+                <td colspan="7">{{loading ? 'Carregando...' : 'Nenhum livro encontrado'}}</td>
             </tr>
             </tbody>
             <tfoot>
@@ -103,14 +111,40 @@
     </ui-card>
 </div>
 
-<ui-menu #menuCancel>
-    <div class="ui-menu-content size-2x">
-        <ui-subheader>Cancelar reserva?</ui-subheader>
-        <div class="ui-menu-item" uiRipple (click)="confirmCancel()">
-            Sim
-        </div>
-        <div class="ui-menu-item" uiRipple>
-            Não
-        </div>
+<ui-dialog #alterarStatusDialog card-size="600">
+    <ui-card-title>Empréstimo</ui-card-title>
+    <ui-card-content>
+        <p>
+            <strong style="display: block">Livro:</strong>
+            <span>{{alterarStatusItem.livro}}</span>
+        </p>
+        <p>
+            <strong style="display: block">Cliente:</strong>
+            <span>{{alterarStatusItem.nomeCliente}}</span>
+        </p>
+        <p>
+            <strong style="display: block">Data da reserva:</strong>
+            <span>{{alterarStatusItem.dataReserva | date : 'shortDate'}}</span>
+        </p>
+        <p *ngIf="alterarStatusItem.dataEmprestimo">
+            <strong style="display: block">Data do empréstimo:</strong>
+            <span>{{alterarStatusItem.dataEmprestimo | date : 'shortDate'}}</span>
+        </p>
+        <p *ngIf="alterarStatusItem.dataDevolucao">
+            <strong style="display: block">Data da devolução:</strong>
+            <span>{{alterarStatusItem.dataDevolucao | date : 'shortDate'}}</span>
+        </p>
+    </ui-card-content>
+    <div class="ui-button-container cover">
+        <button class="ui-button flat" uiRipple (click)="alterarStatusDialog.close()">Fechar</button>
+        <button class="ui-button error" uiRipple (click)="alterarStatusDialog.close(); cancelReserva()"
+                *ngIf="!alterarStatusItem.dataEmprestimo && !alterarStatusItem.dataDevolucao">Cancelar reserva</button>
+        <button class="ui-button success" uiRipple (click)="alterarStatusDialog.close(); markAsEmprestado()"
+                *ngIf="!alterarStatusItem.dataEmprestimo && !alterarStatusItem.dataDevolucao">Marcar como
+            emprestado
+        </button>
+        <button class="ui-button success" uiRipple (click)="alterarStatusDialog.close(); markAsDevolvido()"
+                *ngIf="alterarStatusItem.dataEmprestimo && !alterarStatusItem.dataDevolucao">Marcar como devolvido
+        </button>
     </div>
-</ui-menu>
+</ui-dialog>

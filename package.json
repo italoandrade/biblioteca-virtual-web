@@ -5,11 +5,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --port 6970",
-        "build": "ng build",
-        "test": "ng test",
-        "lint": "ng lint",
-        "e2e": "ng e2e",
-        "prod": "ng build --prod && node web-server"
+        "prod": "ng build --prod"
     },
     "private": true,
     "dependencies": {

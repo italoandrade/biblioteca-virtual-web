@@ -26,6 +26,8 @@
             height: 300px;
             background-size: cover;
             background-position: center;
+            position: relative;
+            overflow: hidden;
         }
 
         @include mobile {
@@ -40,6 +42,18 @@
 
         .titulo {
             padding: 16px;
+        }
+
+        .esgotado {
+            position: absolute;
+            background-color: rgba(black, 0.5);
+            color: ui-text-color('black');
+            transform: rotate(-45deg);
+            text-align: center;
+
+            top: 22px;
+            left: -24px;
+            width: 110px;
         }
     }
 }

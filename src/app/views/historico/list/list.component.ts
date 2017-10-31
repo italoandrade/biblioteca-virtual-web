@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 
 import {Subject} from 'rxjs/Subject';
 
-import {UiToolbarService, UiElement, UiColor} from 'ng-smn-ui';
+import {UiToolbarService, UiElement, UiColor, UiSnackbar} from 'ng-smn-ui';
 
 import {ApiService} from '../../../core/api/api.service';
 
@@ -24,6 +24,7 @@ export class HistoricoListComponent implements OnInit, AfterViewInit, OnDestroy 
     lineCount: number;
     page: number;
     orderBy: string[];
+    cancelItem;
 
     constructor(private toolbarService: UiToolbarService,
                 private element: ElementRef,
@@ -46,7 +47,7 @@ export class HistoricoListComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngAfterViewInit() {
         this.toolbarService.set('Histórico');
-        this.toolbarService.activateExtendedToolbar(600);
+        this.toolbarService.activateExtendedToolbar(960);
 
         this.getEmprestimos();
     }
@@ -117,5 +118,25 @@ export class HistoricoListComponent implements OnInit, AfterViewInit, OnDestroy 
             this.orderBy.push(column + '-DESC');
         }
         this.getEmprestimos();
+    }
+
+    confirmCancel() {
+        if (!this.cancelItem.canceling) {
+            this.cancelItem.canceling = true;
+
+            this.api
+                .prep('emprestimo', 'cancelarReservaUsuario')
+                .call({
+                    id: this.cancelItem.id
+                })
+                .subscribe(() => {
+                    this.emprestimos.splice(this.emprestimos.indexOf(this.cancelItem), 1);
+                    UiSnackbar.show({
+                        text: 'Reserva cancelada com sucesso'
+                    });
+                }, null, () => {
+                    this.cancelItem.canceling = false;
+                });
+        }
     }
 }

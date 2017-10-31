@@ -18,6 +18,7 @@ import {AutorModule} from './views/autor/autor.module';
 import {LivroModule} from './views/livro/livro.module';
 import {CatalogoModule} from './views/catalogo/catalogo.module';
 import {HistoricoModule} from './views/historico/historico.module';
+import {EmprestimoModule} from './views/emprestimo/emprestimo.module';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import {HistoricoModule} from './views/historico/historico.module';
         LivroModule,
         CatalogoModule,
         HistoricoModule,
+        EmprestimoModule,
 
         AppRoutingModule
     ],
